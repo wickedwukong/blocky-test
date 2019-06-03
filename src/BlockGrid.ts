@@ -3,8 +3,12 @@ import Block from './Block';
 class BlockGrid {
   public readonly grid: Block[][];
 
-  constructor(width = 10, height = 10) {
-    this.grid = [];
+  constructor(grid) {
+    this.grid = grid;
+  }
+
+  static randomColour(width = 10, height = 10) {
+    const grid = [];
 
     for (let x = 0; x < width; x++) {
       const col = [];
@@ -12,8 +16,10 @@ class BlockGrid {
         col.push(new Block(x, y));
       }
 
-      this.grid.push(col);
+      grid.push(col);
     }
+
+    return new this(grid);
   }
 
   private width() {
