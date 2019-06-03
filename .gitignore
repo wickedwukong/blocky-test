@@ -1,4 +1,7 @@
-.cache/
-dist/
-
 node_modules/
+*.swp
+*.log
+.idea/
+build/
+out/
+dist/
