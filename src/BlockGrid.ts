@@ -1,18 +1,14 @@
 import Block from './Block';
 
 class BlockGrid {
-  private width: number;
-  private height: number;
-  public grid: Block[][];
+  public readonly grid: Block[][];
 
   constructor(width = 10, height = 10) {
-    this.width = width;
-    this.height = height;
     this.grid = [];
 
-    for (let x = 0; x < this.width; x++) {
+    for (let x = 0; x < width; x++) {
       const col = [];
-      for (let y = 0; y < this.height; y++) {
+      for (let y = 0; y < height; y++) {
         col.push(new Block(x, y));
       }
 
@@ -20,15 +16,23 @@ class BlockGrid {
     }
   }
 
+  private width() {
+    return this.grid.length;
+  }
+
+  private height() {
+    return this.grid[0].length;
+  }
+
   render(el = document.getElementById('gridEl')) {
-    for (let x = 0; x < this.width; x++) {
+    for (let x = 0; x < this.width(); x++) {
       const id = 'col_' + x;
       const colEl = document.createElement('div');
       colEl.id = id;
       colEl.className = 'col';
       el.appendChild(colEl);
 
-      for (let y = this.height - 1; y >= 0; y--) {
+      for (let y = this.height() - 1; y >= 0; y--) {
         const block = this.grid[x][y];
         const id = `block_${x}x${y}`;
         const blockEl = document.createElement('div');
