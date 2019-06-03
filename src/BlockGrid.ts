@@ -47,6 +47,10 @@ class BlockGrid {
   blockClicked(e: MouseEvent, block: Block) {
     console.log(e, block);
   }
+
+  connectedBlockOfSameColour(specifiedBlock: Block): Block[] {
+    return [specifiedBlock];
+  }
 }
 
 export default BlockGrid;

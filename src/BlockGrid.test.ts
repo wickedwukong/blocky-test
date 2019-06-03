@@ -24,5 +24,16 @@ describe('BlockGrid', () => {
     });
   });
 
-  xit('good luck, have fun!', () => {});
+  describe('find connected blocks of the same colour for a specified block', () => {
+    it('find only one block, the specified block itself - one block grid scenario', () => {
+      const blockGrid = new BlockGrid(1, 1);
+      const specifiedBlock = blockGrid.grid[0][0];
+
+      const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
+
+      expect(connectedBlocks.length).toBe(1);
+      expect(connectedBlocks).toContain(specifiedBlock);
+    });
+
+  });
 });
