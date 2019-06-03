@@ -55,5 +55,17 @@ describe('BlockGrid', () => {
       expect(connectedBlocks).toContain(specifiedBlock);
     });
 
+    xit('find 2 blocks, 2 connected blocks of same colour on the same column', () => {
+      let specifiedBlock = new Block(0, 0, 'green');
+      let connectedBlock = new Block(1, 0, 'green');
+      const blockGrid = new BlockGrid([[specifiedBlock], connectedBlock]);
+
+
+      const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
+
+      expect(connectedBlocks.length).toBe(1);
+      expect(connectedBlocks).toEqual([specifiedBlock, connectedBlock]);
+    });
+
   });
 });
