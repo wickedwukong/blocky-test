@@ -35,9 +35,19 @@ describe('BlockGrid', () => {
       expect(connectedBlocks).toContain(specifiedBlock);
     });
 
-    it('find only one block, the specified block itself, when the connected block is of different colour - 2 blocks', () => {
+    it('find only one block, the specified block itself, when the connected block is of different colour - 2 connected blocks of different colour on the same column', () => {
       let specifiedBlock = new Block(0, 0, 'green');
       const blockGrid = new BlockGrid([[specifiedBlock, new Block(0, 1, 'blue')]]);
+
+      const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
+
+      expect(connectedBlocks.length).toBe(1);
+      expect(connectedBlocks).toContain(specifiedBlock);
+    });
+
+    it('find only one block, the specified block itself, when the connected block is of different colour - 2 connected blocks of different colour on the same row', () => {
+      let specifiedBlock = new Block(0, 0, 'green');
+      const blockGrid = new BlockGrid([[specifiedBlock], new Block(1, 0, 'blue')]);
 
       const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
 
