@@ -41,7 +41,7 @@ describe('BlockGrid', () => {
             let specifiedBlock = new Block(0, 0, 'green');
             const blockGrid = new BlockGrid([[specifiedBlock]]);
 
-            const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
+            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
             expect(connectedBlocks.length).toBe(1);
             expect(connectedBlocks).toContain(specifiedBlock);
@@ -51,7 +51,7 @@ describe('BlockGrid', () => {
             let specifiedBlock = new Block(0, 0, 'green');
             const blockGrid = new BlockGrid([[specifiedBlock, new Block(0, 1, 'blue')]]);
 
-            const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
+            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
             expect(connectedBlocks.length).toBe(1);
             expect(connectedBlocks).toContain(specifiedBlock);
@@ -61,7 +61,7 @@ describe('BlockGrid', () => {
             let specifiedBlock = new Block(0, 0, 'green');
             const blockGrid = new BlockGrid([[specifiedBlock, new Block(0, 1, 'blue')]]);
 
-            const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
+            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
             expect(connectedBlocks.length).toBe(1);
             expect(connectedBlocks).toContain(specifiedBlock);
@@ -73,7 +73,7 @@ describe('BlockGrid', () => {
           const blockGrid = new BlockGrid([[connectedBlock], [specifiedBlock]]);
 
 
-          const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
+          const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
           expect(connectedBlocks.length).toBe(2);
           expect(connectedBlocks).toEqual([connectedBlock,specifiedBlock]);

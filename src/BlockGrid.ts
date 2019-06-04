@@ -74,34 +74,37 @@ class BlockGrid {
         return (leftBlock.colour === specifiedBlock.colour) ? leftBlock : null;
     }
 
-    private helper(specifiedBlock: Block, affectedBlocks: Block[]) {
-        if (affectedBlocks.indexOf(specifiedBlock) > -1) return affectedBlocks;
+    private helper(specifiedBlock: Block, affectedBlocks: Block[]): Block[] {
+        function specifiedBlockHadBeenTraversed() {
+            return affectedBlocks.indexOf(specifiedBlock) > -1;
+        }
+
+        if (specifiedBlockHadBeenTraversed()) return affectedBlocks;
 
         affectedBlocks.push(specifiedBlock);
 
-        const leftBlock: Block = this.leftConnectedBlock(specifiedBlock);
-        if (leftBlock !== null) {
-            affectedBlocks.push(leftBlock);
-            this.helper(leftBlock, affectedBlocks);
+        const leftAffectedBlock: Block = this.leftConnectedBlock(specifiedBlock);
+
+        if (leftAffectedBlock !== null) {
+            this.helper(leftAffectedBlock, affectedBlocks);
         }
 
         return affectedBlocks;
     }
 
-    connectedBlockOfSameColour(specifiedBlock: Block): Block[] {
-        const connectedBlocks: Block[] = [];
-        this.helper(specifiedBlock, connectedBlocks);
+    affectedBlocks(specifiedBlock: Block): Block[] {
+        return this.helper(specifiedBlock, []).sort(this.leftToRightTopToBottom());
+    }
 
-        return connectedBlocks.sort((b1, b2) => {
+    private leftToRightTopToBottom() {
+        return (b1, b2) => {
             if (b1.x < b2.x) return -1;
 
             if (b1.x > b2.x) return 1;
 
             return (b1.y < b2.y) ? 1 : -1;
-        });
+        };
     }
-
-
 }
 
 export default BlockGrid;
