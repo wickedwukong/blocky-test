@@ -1,75 +1,107 @@
 import Block from './Block';
 
+
 class BlockGrid {
-  public readonly grid: Block[][];
+    public readonly grid: Block[][];
 
-  constructor(grid: Block[][]) {
-    for (let x = 0; x < grid.length; x++) {
-      for (let y = 0; y < grid[x].length; y++) {
-        if (grid[x][y].x != x || grid[x][y].y != y) {
-          throw new Error(`Invalid grid. Block's x and y value are not valid.\n`
-              + `They should reflect its position in the grid.\n`
-              + `Block at position ${x} ${y} has x: ${grid[x][y].x} and y: ${grid[x][y].y}`)
+    constructor(grid: Block[][]) {
+        for (let x = 0; x < grid.length; x++) {
+            for (let y = 0; y < grid[x].length; y++) {
+                if (grid[x][y].x != x || grid[x][y].y != y) {
+                    throw new Error(`Invalid grid. Block's x and y value are not valid.\n`
+                        + `They should reflect its position in the grid.\n`
+                        + `Block at position ${x} ${y} has x: ${grid[x][y].x} and y: ${grid[x][y].y}`)
+                }
+            }
         }
-      }
-    }
-      this.grid = grid;
-  }
-
-  static randomColour(width = 10, height = 10) {
-    const grid = [];
-
-    for (let x = 0; x < width; x++) {
-      const col = [];
-      for (let y = 0; y < height; y++) {
-        col.push(new Block(x, y));
-      }
-
-      grid.push(col);
+        this.grid = grid;
     }
 
-    return new this(grid);
-  }
+    static randomColour(width = 10, height = 10): BlockGrid {
+        const grid = [];
 
-  private width() {
-    return this.grid.length;
-  }
+        for (let x = 0; x < width; x++) {
+            const col = [];
+            for (let y = 0; y < height; y++) {
+                col.push(new Block(x, y));
+            }
 
-  private height() {
-    return this.grid[0].length;
-  }
+            grid.push(col);
+        }
 
-  render(el = document.getElementById('gridEl')) {
-    for (let x = 0; x < this.width(); x++) {
-      const id = 'col_' + x;
-      const colEl = document.createElement('div');
-      colEl.id = id;
-      colEl.className = 'col';
-      el.appendChild(colEl);
-
-      for (let y = this.height() - 1; y >= 0; y--) {
-        const block = this.grid[x][y];
-        const id = `block_${x}x${y}`;
-        const blockEl = document.createElement('div');
-
-        blockEl.id = id;
-        blockEl.className = 'block';
-        blockEl.style.background = block.colour;
-        blockEl.addEventListener('click', (evt) =>
-          this.blockClicked(evt, block)
-        );
-        colEl.appendChild(blockEl);
-      }
+        return new this(grid);
     }
-  }
 
-  blockClicked(e: MouseEvent, block: Block) {
-    console.log(e, block);
-  }
+    private width(): number {
+        return this.grid.length;
+    }
 
-  connectedBlockOfSameColour(specifiedBlock: Block): Block[] {
-    return [specifiedBlock];
-  }
+    private height(): number {
+        return this.grid[0].length;
+    }
+
+    render(el = document.getElementById('gridEl')) {
+        for (let x = 0; x < this.width(); x++) {
+            const id = 'col_' + x;
+            const colEl = document.createElement('div');
+            colEl.id = id;
+            colEl.className = 'col';
+            el.appendChild(colEl);
+
+            for (let y = this.height() - 1; y >= 0; y--) {
+                const block = this.grid[x][y];
+                const id = `block_${x}x${y}`;
+                const blockEl = document.createElement('div');
+
+                blockEl.id = id;
+                blockEl.className = 'block';
+                blockEl.style.background = block.colour;
+                blockEl.addEventListener('click', (evt) =>
+                    this.blockClicked(evt, block)
+                );
+                colEl.appendChild(blockEl);
+            }
+        }
+    }
+
+    blockClicked(e: MouseEvent, block: Block) {
+        console.log(e, block);
+    }
+
+    private leftConnectedBlock(specifiedBlock: Block): Block | null {
+        if (specifiedBlock.x == 0) return null;
+        const leftBlock = this.grid[specifiedBlock.x - 1][specifiedBlock.y];
+        return (leftBlock.colour === specifiedBlock.colour) ? leftBlock : null;
+    }
+
+    private helper(specifiedBlock: Block, affectedBlocks: Block[]) {
+        if (affectedBlocks.indexOf(specifiedBlock) > -1) return affectedBlocks;
+
+        affectedBlocks.push(specifiedBlock);
+
+        const leftBlock: Block = this.leftConnectedBlock(specifiedBlock);
+        if (leftBlock !== null) {
+            affectedBlocks.push(leftBlock);
+            this.helper(leftBlock, affectedBlocks);
+        }
+
+        return affectedBlocks;
+    }
+
+    connectedBlockOfSameColour(specifiedBlock: Block): Block[] {
+        const connectedBlocks: Block[] = [];
+        this.helper(specifiedBlock, connectedBlocks);
+
+        return connectedBlocks.sort((b1, b2) => {
+            if (b1.x < b2.x) return -1;
+
+            if (b1.x > b2.x) return 1;
+
+            return (b1.y < b2.y) ? 1 : -1;
+        });
+    }
+
+
 }
 
 export default BlockGrid;

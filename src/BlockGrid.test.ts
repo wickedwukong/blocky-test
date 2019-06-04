@@ -67,16 +67,16 @@ describe('BlockGrid', () => {
             expect(connectedBlocks).toContain(specifiedBlock);
         });
 
-        xit('find 2 blocks, 2 connected blocks of same colour on the same row', () => {
-          let specifiedBlock = new Block(0, 0, 'green');
-          let connectedBlock = new Block(1, 0, 'green');
-          const blockGrid = new BlockGrid([[specifiedBlock], [connectedBlock]]);
+        it('find 2 affected blocks in left to right order - 2 blocks on the same row - search left ', () => {
+          let connectedBlock = new Block(0, 0, 'green');
+          let specifiedBlock = new Block(1, 0, 'green');
+          const blockGrid = new BlockGrid([[connectedBlock], [specifiedBlock]]);
 
 
           const connectedBlocks = blockGrid.connectedBlockOfSameColour(specifiedBlock);
 
           expect(connectedBlocks.length).toBe(2);
-          expect(connectedBlocks).toEqual([specifiedBlock, connectedBlock]);
+          expect(connectedBlocks).toEqual([connectedBlock,specifiedBlock]);
         });
     });
 });
