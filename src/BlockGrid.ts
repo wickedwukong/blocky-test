@@ -3,8 +3,17 @@ import Block from './Block';
 class BlockGrid {
   public readonly grid: Block[][];
 
-  constructor(grid) {
-    this.grid = grid;
+  constructor(grid: Block[][]) {
+    for (let x = 0; x < grid.length; x++) {
+      for (let y = 0; y < grid[x].length; y++) {
+        if (grid[x][y].x != x || grid[x][y].y != y) {
+          throw new Error(`Invalid grid. Block's x and y value are not valid.\n`
+              + `They should reflect its position in the grid.\n`
+              + `Block at position ${x} ${y} has x: ${grid[x][y].x} and y: ${grid[x][y].y}`)
+        }
+      }
+    }
+      this.grid = grid;
   }
 
   static randomColour(width = 10, height = 10) {
