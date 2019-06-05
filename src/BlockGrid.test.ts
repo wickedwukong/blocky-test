@@ -151,21 +151,22 @@ describe('BlockGrid', () => {
         });
 
 
-        it('a more comprehensive test - search left, down, right', () => {
+        it('a more comprehensive test - search left, down, right and up', () => {
             let specifiedBlock = new Block(1, 1, 'green');
             let affectedBlock1 = new Block(0, 1, 'green');
             let affectedBlock2 = new Block(0, 0, 'green');
             let affectedBlock3 = new Block(1, 0, 'green');
-            const blockGrid = new BlockGrid([[affectedBlock2, affectedBlock1], [affectedBlock3, specifiedBlock]]);
-
+            let affectedBlock4 = new Block(1, 2, 'green');
+            const blockGrid = new BlockGrid([[affectedBlock2, affectedBlock1, new Block(0, 2, "different-colour")], [affectedBlock3, specifiedBlock, affectedBlock4]]);
 
             const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(affectedBlocks).toHaveLength(4);
+            expect(affectedBlocks).toHaveLength(5);
             expect(affectedBlocks).toContain(specifiedBlock);
             expect(affectedBlocks).toContain(affectedBlock1);
             expect(affectedBlocks).toContain(affectedBlock2);
             expect(affectedBlocks).toContain(affectedBlock3);
+            expect(affectedBlocks).toContain(affectedBlock4);
         });
 
 
