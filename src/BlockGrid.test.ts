@@ -68,16 +68,34 @@ describe('BlockGrid', () => {
         });
 
         it('find 2 affected blocks - 2 blocks on the same row - search left', () => {
-          let connectedBlock = new Block(0, 0, 'green');
-          let specifiedBlock = new Block(1, 0, 'green');
-          const blockGrid = new BlockGrid([[connectedBlock], [specifiedBlock]]);
+            let connectedBlock = new Block(0, 0, 'green');
+            let specifiedBlock = new Block(1, 0, 'green');
+            const blockGrid = new BlockGrid([[connectedBlock], [specifiedBlock]]);
 
 
-          const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-          expect(connectedBlocks).toHaveLength(2);
-          expect(connectedBlocks).toEqual([specifiedBlock, connectedBlock]);
+            expect(connectedBlocks).toHaveLength(2);
+            expect(connectedBlocks).toContain(specifiedBlock);
+            expect(connectedBlocks).toContain(connectedBlock);
         });
+
+        it('find 3 affected blocks - 3 blocks on the same row - search left', () => {
+            let connectedBlock1 = new Block(0, 0, 'green');
+            let connectedBlock2 = new Block(1, 0, 'green');
+            let specifiedBlock = new Block(2, 0, 'green');
+
+            const blockGrid = new BlockGrid([[connectedBlock1], [connectedBlock2], [specifiedBlock]]);
+
+
+            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+
+            expect(connectedBlocks.length).toBe(3);
+            expect(connectedBlocks).toContain(connectedBlock1);
+            expect(connectedBlocks).toContain(connectedBlock2);
+            expect(connectedBlocks).toContain(specifiedBlock);
+        });
+
 
     });
 });
