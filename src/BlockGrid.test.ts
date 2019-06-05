@@ -24,7 +24,7 @@ describe('BlockGrid', () => {
         });
     });
 
-    describe('find connected blocks of the same colour for a specified block', () => {
+    describe('find affected blocks for a specified block', () => {
 
         it('should throw Error if injected grid has blocks whose x and y value do not reflect its position in the grid', () => {
                 try {
@@ -41,59 +41,72 @@ describe('BlockGrid', () => {
             let specifiedBlock = new Block(0, 0, 'green');
             const blockGrid = new BlockGrid([[specifiedBlock]]);
 
-            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks).toHaveLength(1);
-            expect(connectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toHaveLength(1);
+            expect(affectedBlocks).toContain(specifiedBlock);
         });
 
         it('find only one block, the specified block itself, when the connected block is of different colour - 2 connected blocks of different colour on the same column', () => {
             let specifiedBlock = new Block(0, 0, 'green');
             const blockGrid = new BlockGrid([[specifiedBlock, new Block(0, 1, 'blue')]]);
 
-            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks).toHaveLength(1);
-            expect(connectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toHaveLength(1);
+            expect(affectedBlocks).toContain(specifiedBlock);
         });
 
         it('find only one block, the specified block itself, when the connected block is of different colour - 2 connected blocks of different colour on the same column', () => {
             let specifiedBlock = new Block(0, 0, 'green');
             const blockGrid = new BlockGrid([[specifiedBlock, new Block(0, 1, 'blue')]]);
 
-            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks).toHaveLength(1);
-            expect(connectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toHaveLength(1);
+            expect(affectedBlocks).toContain(specifiedBlock);
         });
 
         it('find 2 affected blocks - 2 blocks on the same row - search left', () => {
-            let connectedBlock = new Block(0, 0, 'green');
+            let affectedBlock = new Block(0, 0, 'green');
             let specifiedBlock = new Block(1, 0, 'green');
-            const blockGrid = new BlockGrid([[connectedBlock], [specifiedBlock]]);
+            const blockGrid = new BlockGrid([[affectedBlock], [specifiedBlock]]);
 
 
-            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks).toHaveLength(2);
-            expect(connectedBlocks).toContain(specifiedBlock);
-            expect(connectedBlocks).toContain(connectedBlock);
+            expect(affectedBlocks).toHaveLength(2);
+            expect(affectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toContain(affectedBlock);
         });
 
         it('find 3 affected blocks - 3 blocks on the same row - search left', () => {
-            let connectedBlock1 = new Block(0, 0, 'green');
-            let connectedBlock2 = new Block(1, 0, 'green');
+            let affectedBlock1 = new Block(0, 0, 'green');
+            let affectedBlock2 = new Block(1, 0, 'green');
             let specifiedBlock = new Block(2, 0, 'green');
 
-            const blockGrid = new BlockGrid([[connectedBlock1], [connectedBlock2], [specifiedBlock]]);
+            const blockGrid = new BlockGrid([[affectedBlock1], [affectedBlock2], [specifiedBlock]]);
 
 
-            const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks.length).toBe(3);
-            expect(connectedBlocks).toContain(connectedBlock1);
-            expect(connectedBlocks).toContain(connectedBlock2);
-            expect(connectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks.length).toBe(3);
+            expect(affectedBlocks).toContain(affectedBlock1);
+            expect(affectedBlocks).toContain(affectedBlock2);
+            expect(affectedBlocks).toContain(specifiedBlock);
+        });
+
+        it('find 2 affected blocks - 2 blocks on the same column - search down', () => {
+            let specifiedBlock = new Block(0, 1, 'green');
+            let affectedBlock = new Block(0, 0, 'green');
+            const blockGrid = new BlockGrid([[specifiedBlock, affectedBlock]]);
+
+
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+
+            expect(affectedBlocks).toHaveLength(2);
+            expect(affectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toContain(affectedBlock);
         });
 
 
