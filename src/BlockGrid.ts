@@ -17,7 +17,7 @@ class BlockGrid {
         this.grid = grid;
     }
 
-    static randomColour(width = 10, height = 10): BlockGrid {
+    static randomColour(width = 5, height = 5): BlockGrid {
         const grid = [];
 
         for (let x = 0; x < width; x++) {
@@ -41,6 +41,17 @@ class BlockGrid {
     }
 
     render(el = document.getElementById('gridEl')) {
+        function removeExistingGrid() {
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+        }
+
+        removeExistingGrid();
+        this.drawGrid(el);
+    }
+
+    private drawGrid(el) {
         for (let x = 0; x < this.width(); x++) {
             const id = 'col_' + x;
             const colEl = document.createElement('div');
@@ -65,11 +76,12 @@ class BlockGrid {
     }
 
     blockClicked(e: MouseEvent, block: Block) {
-        console.log(e, block);
+        this.remove(this.affectedBlocks(block));
+        this.render();
     }
 
     remove(affectedBlocks: Block[]) {
-        affectedBlocks.sort(this.leftToRightTopToBottom()).forEach((block) => {
+        affectedBlocks.sort(this.leftToRightTopToBottom).forEach((block) => {
                 const aboveConnectedBlocks = this.aboveConnectedBlocks(block);
 
                 aboveConnectedBlocks.forEach((block) => {
@@ -81,16 +93,14 @@ class BlockGrid {
         );
     }
 
-    private leftToRightTopToBottom() {
-        return (b1, b2) => {
-            if (b1.x < b2.x) return -1;
+    private leftToRightTopToBottom = (b1: Block, b2: Block) => {
+        if (b1.x < b2.x) return -1;
 
-            if (b1.x > b2.x) return 1;
+        if (b1.x > b2.x) return 1;
 
-            return (b1.y < b2.y) ? 1 : -1;
-        };
-    }
-    
+        return (b1.y < b2.y) ? 1 : -1;
+    };
+
     private leftAffectedBlock(specifiedBlock: Block): Block | null {
         if (specifiedBlock.x == 0) return null;
         const leftBlock = this.grid[specifiedBlock.x - 1][specifiedBlock.y];
@@ -122,7 +132,7 @@ class BlockGrid {
     private aboveConnectedBlock(specifiedBlock: Block): Block | null {
         if (specifiedBlock.y == this.height() - 1) return null;
 
-        return  this.grid[specifiedBlock.x][specifiedBlock.y + 1];
+        return this.grid[specifiedBlock.x][specifiedBlock.y + 1];
     }
 
 
