@@ -70,8 +70,13 @@ class BlockGrid {
 
     remove(affectedBlocks: Block[]) {
         affectedBlocks.forEach((block) => {
-                const aboveBlock = this.aboveAffectedBlock(block);
-                this.grid[block.x][block.y].colour = (aboveBlock === null) ? "grey" : aboveBlock.colour
+                const aboveConnectedBlocks = this.aboveConnectedBlocks(block);
+
+                aboveConnectedBlocks.forEach((block) => {
+                    const aboveConnectedBlock = this.aboveConnectedBlock(block);
+                    this.grid[block.x][block.y].colour = (aboveConnectedBlock === null) ? "grey" : aboveConnectedBlock.colour;
+                });
+
             }
         );
     }
@@ -99,6 +104,17 @@ class BlockGrid {
         const above = this.grid[specifiedBlock.x][specifiedBlock.y + 1];
         return (above.colour === specifiedBlock.colour) ? above : null;
     }
+
+    private aboveConnectedBlocks(specifiedBlock: Block): Block[] {
+        return this.grid[specifiedBlock.x].slice(specifiedBlock.y);
+    }
+
+    private aboveConnectedBlock(specifiedBlock: Block): Block | null {
+        if (specifiedBlock.y == this.height() - 1) return null;
+
+        return  this.grid[specifiedBlock.x][specifiedBlock.y + 1];
+    }
+
 
     private searchLeftDownRightUp(specifiedBlock: Block, affectedBlocks: Block[]): Block[] {
         function specifiedBlockHadBeenTraversed() {

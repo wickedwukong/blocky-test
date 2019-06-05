@@ -173,11 +173,20 @@ describe('BlockGrid', () => {
 
     describe('remove affected blocks and replace them with falling blocks', () => {
 
-        it('should be filled with grey for one block grid', () => {
+        it('should be filled with grey when there is no block above - single block grid', () => {
                 const blockGrid = new BlockGrid([[new Block(0, 0, "green")]]);
                 blockGrid.remove([new Block(0, 0, "green")]);
 
                 expect(blockGrid.grid[0][0]).toEqual(new Block(0, 0, "grey"));
+            }
+        );
+
+        it('should be filled with color of the block above and the block above should be filled with grey - 2 block grid', () => {
+                const blockGrid = new BlockGrid([[new Block(0, 0, "green"), new Block(0, 1, "red")]]);
+                blockGrid.remove([new Block(0, 0, "green")]);
+
+                expect(blockGrid.grid[0][0]).toEqual(new Block(0, 0, "red"));
+                expect(blockGrid.grid[0][1]).toEqual(new Block(0, 1, "grey"));
             }
         );
     });
