@@ -82,11 +82,17 @@ class BlockGrid {
 
     private rightAffectedBlock(specifiedBlock: Block): Block | null {
         if (specifiedBlock.x == this.width() - 1) return null;
-        const belowBlock = this.grid[specifiedBlock.x + 1][specifiedBlock.y];
-        return (belowBlock.colour === specifiedBlock.colour) ? belowBlock : null;
+        const rightBlock = this.grid[specifiedBlock.x + 1][specifiedBlock.y];
+        return (rightBlock.colour === specifiedBlock.colour) ? rightBlock : null;
     }
 
-    private helper(specifiedBlock: Block, affectedBlocks: Block[]): Block[] {
+    private aboveAffectedBlock(specifiedBlock: Block): Block | null {
+        if (specifiedBlock.y == this.height() - 1) return null;
+        const above = this.grid[specifiedBlock.x][specifiedBlock.y + 1];
+        return (above.colour === specifiedBlock.colour) ? above : null;
+    }
+
+    private searchLeftDownRightUp(specifiedBlock: Block, affectedBlocks: Block[]): Block[] {
         function specifiedBlockHadBeenTraversed() {
             return affectedBlocks.indexOf(specifiedBlock) > -1;
         }
@@ -98,28 +104,32 @@ class BlockGrid {
         const leftAffectedBlock: Block = this.leftAffectedBlock(specifiedBlock);
 
         if (leftAffectedBlock !== null) {
-            this.helper(leftAffectedBlock, affectedBlocks);
+            this.searchLeftDownRightUp(leftAffectedBlock, affectedBlocks);
         }
 
         const belowAffectedBlock: Block = this.belowAffectedBlock(specifiedBlock);
 
         if (belowAffectedBlock !== null) {
-            this.helper(belowAffectedBlock, affectedBlocks);
+            this.searchLeftDownRightUp(belowAffectedBlock, affectedBlocks);
         }
-
 
         const rightAffectedBlock: Block = this.rightAffectedBlock(specifiedBlock);
 
         if (rightAffectedBlock !== null) {
-            this.helper(rightAffectedBlock, affectedBlocks);
+            this.searchLeftDownRightUp(rightAffectedBlock, affectedBlocks);
         }
 
+        const aboveAffectedBlock: Block = this.aboveAffectedBlock(specifiedBlock);
+
+        if (aboveAffectedBlock !== null) {
+            this.searchLeftDownRightUp(aboveAffectedBlock, affectedBlocks);
+        }
 
         return affectedBlocks;
     }
 
     affectedBlocks(specifiedBlock: Block): Block[] {
-        return this.helper(specifiedBlock, [])
+        return this.searchLeftDownRightUp(specifiedBlock, [])
     }
 }
 

@@ -137,6 +137,20 @@ describe('BlockGrid', () => {
             expect(affectedBlocks).toContain(affectedBlock2);
         });
 
+        it('find 2 affected blocks - 2 blocks on the same column - search up', () => {
+            let specifiedBlock = new Block(0, 0, 'green');
+            let affectedBlock = new Block(0, 1, 'green');
+            const blockGrid = new BlockGrid([[specifiedBlock, affectedBlock]]);
+
+
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+
+            expect(affectedBlocks).toHaveLength(2);
+            expect(affectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toContain(affectedBlock);
+        });
+
+
         it('a more comprehensive test - search left, down, right', () => {
             let specifiedBlock = new Block(1, 1, 'green');
             let affectedBlock1 = new Block(0, 1, 'green');
