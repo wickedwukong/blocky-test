@@ -17,7 +17,7 @@ class BlockGrid {
         this.grid = grid;
     }
 
-    static randomColour(width = 5, height = 5): BlockGrid {
+    static randomColour(width = 10, height = 10): BlockGrid {
         const grid = [];
 
         for (let x = 0; x < width; x++) {

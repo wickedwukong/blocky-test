@@ -1,5 +1,4 @@
 import BlockGrid from './BlockGrid';
-import Position from './BlockGrid';
 import Block from './Block';
 
 describe('BlockGrid', () => {
