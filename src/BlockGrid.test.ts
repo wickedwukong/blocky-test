@@ -181,7 +181,18 @@ describe('BlockGrid', () => {
             }
         );
 
-        it('should be filled with color of the block above and the block above should be filled with grey - 2 block grid', () => {
+        it('should not remove blocks below when the blocks below have different colour', () => {
+                const blockBelow = new Block(0, 0, "green");
+                const blockGrid = new BlockGrid([[blockBelow, new Block(0, 1, "red")]]);
+                
+                blockGrid.remove([new Block(0, 1, "red")]);
+
+                expect(blockGrid.grid[0][0]).toEqual(blockBelow);
+                expect(blockGrid.grid[0][1]).toEqual(new Block(0, 1, "grey"));
+            }
+        );
+
+        it('should be filled with color of the block above and the block above should be filled with grey - 2 connected but different colour block grid', () => {
                 const blockGrid = new BlockGrid([[new Block(0, 0, "green"), new Block(0, 1, "red")]]);
                 blockGrid.remove([new Block(0, 0, "green")]);
 
