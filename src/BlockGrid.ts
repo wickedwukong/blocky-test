@@ -68,6 +68,14 @@ class BlockGrid {
         console.log(e, block);
     }
 
+    remove(affectedBlocks: Block[]) {
+        affectedBlocks.forEach((block) => {
+                const aboveBlock = this.aboveAffectedBlock(block);
+                this.grid[block.x][block.y].colour = (aboveBlock === null) ? "grey" : aboveBlock.colour
+            }
+        );
+    }
+
     private leftAffectedBlock(specifiedBlock: Block): Block | null {
         if (specifiedBlock.x == 0) return null;
         const leftBlock = this.grid[specifiedBlock.x - 1][specifiedBlock.y];

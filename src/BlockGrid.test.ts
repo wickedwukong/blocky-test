@@ -1,4 +1,5 @@
 import BlockGrid from './BlockGrid';
+import Position from './BlockGrid';
 import Block from './Block';
 
 describe('BlockGrid', () => {
@@ -168,7 +169,17 @@ describe('BlockGrid', () => {
             expect(affectedBlocks).toContain(affectedBlock3);
             expect(affectedBlocks).toContain(affectedBlock4);
         });
-
-
     });
+
+    describe('remove affected blocks and replace them with falling blocks', () => {
+
+        it('should be filled with grey for one block grid', () => {
+                const blockGrid = new BlockGrid([[new Block(0, 0, "green")]]);
+                blockGrid.remove([new Block(0, 0, "green")]);
+
+                expect(blockGrid.grid[0][0]).toEqual(new Block(0, 0, "grey"));
+            }
+        );
+    });
+
 });
