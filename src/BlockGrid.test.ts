@@ -5,10 +5,10 @@ describe('BlockGrid', () => {
     it('fills a multidimensional array of Blocks as its grid, according to the given width and height', () => {
         const grid = BlockGrid.randomColour(10, 10).grid;
 
-        expect(grid.length).toBe(10);
+        expect(grid).toHaveLength(10);
 
         grid.forEach((column) => {
-            expect(column.length).toBe(10);
+            expect(column).toHaveLength(10);
 
             column.forEach((block) => {
                 expect(block).toBeInstanceOf(Block);
@@ -17,10 +17,10 @@ describe('BlockGrid', () => {
 
         const gridB = BlockGrid.randomColour(3, 5).grid;
 
-        expect(gridB.length).toBe(3);
+        expect(gridB).toHaveLength(3);
 
         gridB.forEach((column) => {
-            expect(column.length).toBe(5);
+            expect(column).toHaveLength(5);
         });
     });
 
@@ -43,7 +43,7 @@ describe('BlockGrid', () => {
 
             const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks.length).toBe(1);
+            expect(connectedBlocks).toHaveLength(1);
             expect(connectedBlocks).toContain(specifiedBlock);
         });
 
@@ -53,7 +53,7 @@ describe('BlockGrid', () => {
 
             const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks.length).toBe(1);
+            expect(connectedBlocks).toHaveLength(1);
             expect(connectedBlocks).toContain(specifiedBlock);
         });
 
@@ -63,11 +63,11 @@ describe('BlockGrid', () => {
 
             const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-            expect(connectedBlocks.length).toBe(1);
+            expect(connectedBlocks).toHaveLength(1);
             expect(connectedBlocks).toContain(specifiedBlock);
         });
 
-        it('find 2 affected blocks in left to right order - 2 blocks on the same row - search left ', () => {
+        it('find 2 affected blocks - 2 blocks on the same row - search left', () => {
           let connectedBlock = new Block(0, 0, 'green');
           let specifiedBlock = new Block(1, 0, 'green');
           const blockGrid = new BlockGrid([[connectedBlock], [specifiedBlock]]);
@@ -75,8 +75,9 @@ describe('BlockGrid', () => {
 
           const connectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
 
-          expect(connectedBlocks.length).toBe(2);
-          expect(connectedBlocks).toEqual([connectedBlock,specifiedBlock]);
+          expect(connectedBlocks).toHaveLength(2);
+          expect(connectedBlocks).toEqual([specifiedBlock, connectedBlock]);
         });
+
     });
 });

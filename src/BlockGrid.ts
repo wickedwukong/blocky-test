@@ -68,7 +68,7 @@ class BlockGrid {
         console.log(e, block);
     }
 
-    private leftConnectedBlock(specifiedBlock: Block): Block | null {
+    private leftAffectedBlock(specifiedBlock: Block): Block | null {
         if (specifiedBlock.x == 0) return null;
         const leftBlock = this.grid[specifiedBlock.x - 1][specifiedBlock.y];
         return (leftBlock.colour === specifiedBlock.colour) ? leftBlock : null;
@@ -83,7 +83,7 @@ class BlockGrid {
 
         affectedBlocks.push(specifiedBlock);
 
-        const leftAffectedBlock: Block = this.leftConnectedBlock(specifiedBlock);
+        const leftAffectedBlock: Block = this.leftAffectedBlock(specifiedBlock);
 
         if (leftAffectedBlock !== null) {
             this.helper(leftAffectedBlock, affectedBlocks);
@@ -93,17 +93,7 @@ class BlockGrid {
     }
 
     affectedBlocks(specifiedBlock: Block): Block[] {
-        return this.helper(specifiedBlock, []).sort(this.leftToRightTopToBottom());
-    }
-
-    private leftToRightTopToBottom() {
-        return (b1, b2) => {
-            if (b1.x < b2.x) return -1;
-
-            if (b1.x > b2.x) return 1;
-
-            return (b1.y < b2.y) ? 1 : -1;
-        };
+        return this.helper(specifiedBlock, [])
     }
 }
 
