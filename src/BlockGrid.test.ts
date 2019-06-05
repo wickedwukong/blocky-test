@@ -99,7 +99,7 @@ describe('BlockGrid', () => {
         it('find 2 affected blocks - 2 blocks on the same column - search down', () => {
             let specifiedBlock = new Block(0, 1, 'green');
             let affectedBlock = new Block(0, 0, 'green');
-            const blockGrid = new BlockGrid([[specifiedBlock, affectedBlock]]);
+            const blockGrid = new BlockGrid([[affectedBlock, specifiedBlock]]);
 
 
             const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
@@ -107,6 +107,36 @@ describe('BlockGrid', () => {
             expect(affectedBlocks).toHaveLength(2);
             expect(affectedBlocks).toContain(specifiedBlock);
             expect(affectedBlocks).toContain(affectedBlock);
+        });
+
+        it('find 3 affected blocks - 3 blocks on the same column - search down', () => {
+            let specifiedBlock = new Block(0, 2, 'green');
+            let affectedBlock1 = new Block(0, 1, 'green');
+            let affectedBlock2 = new Block(0, 0, 'green');
+            const blockGrid = new BlockGrid([[affectedBlock2, affectedBlock1, specifiedBlock]]);
+
+
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+
+            expect(affectedBlocks).toHaveLength(3);
+            expect(affectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toContain(affectedBlock1);
+            expect(affectedBlocks).toContain(affectedBlock2);
+        });
+
+        it('a more comprehensive test - search left, down', () => {
+            let specifiedBlock = new Block(1, 1, 'green');
+            let affectedBlock1 = new Block(0, 1, 'green');
+            let affectedBlock2 = new Block(0, 0, 'green');
+            const blockGrid = new BlockGrid([[affectedBlock2, affectedBlock1], [new Block(1, 0, "different-colour"), specifiedBlock]]);
+
+
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+
+            expect(affectedBlocks).toHaveLength(3);
+            expect(affectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toContain(affectedBlock1);
+            expect(affectedBlocks).toContain(affectedBlock2);
         });
 
 
