@@ -181,10 +181,20 @@ describe('BlockGrid', () => {
             }
         );
 
+        it('should remove multiple affected blocks on the same row but leave unaffected blocks unchanged', () => {
+                const blockGrid = new BlockGrid([[new Block(0, 0, "green")], [new Block(1, 0, "red")], [new Block(2, 0, "green")]]);
+                blockGrid.remove([new Block(0, 0, "green"), new Block(2, 0, "green")]);
+
+                expect(blockGrid.grid[0][0]).toEqual(new Block(0, 0, "grey"));
+                expect(blockGrid.grid[1][0]).toEqual(new Block(1, 0, "red"));
+                expect(blockGrid.grid[2][0]).toEqual(new Block(2, 0, "grey"));
+            }
+        );
+
         it('should not remove blocks below when the blocks below have different colour', () => {
                 const blockBelow = new Block(0, 0, "green");
                 const blockGrid = new BlockGrid([[blockBelow, new Block(0, 1, "red")]]);
-                
+
                 blockGrid.remove([new Block(0, 1, "red")]);
 
                 expect(blockGrid.grid[0][0]).toEqual(blockBelow);
