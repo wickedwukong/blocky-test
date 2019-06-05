@@ -202,7 +202,7 @@ describe('BlockGrid', () => {
             }
         );
 
-        it('should be filled with color of the block above and the block above should be filled with grey - 2 connected but different colour block grid', () => {
+        it('should be filled with color of the block above and the block above should be filled with grey - 2 connected but different colour block grid on same column', () => {
                 const blockGrid = new BlockGrid([[new Block(0, 0, "green"), new Block(0, 1, "red")]]);
                 blockGrid.remove([new Block(0, 0, "green")]);
 
@@ -210,6 +210,44 @@ describe('BlockGrid', () => {
                 expect(blockGrid.grid[0][1]).toEqual(new Block(0, 1, "grey"));
             }
         );
+
+        it('remove multiple block on the same column', () => {
+                const blockGrid = new BlockGrid([[new Block(0, 0, "green"), new Block(0, 1, "green")]]);
+                blockGrid.remove([new Block(0, 0, "green"), new Block(0, 1, "green")]);
+
+                expect(blockGrid.grid[0][0]).toEqual(new Block(0, 0, "grey"));
+                expect(blockGrid.grid[0][1]).toEqual(new Block(0, 1, "grey"));
+            }
+        );
+
+        it('a more comprehensive test case. Multiple affected blocks spanning over multiple rows and columns - 4 blocks, 4 * 4 grid', () => {
+                const blockGrid = new BlockGrid([
+                    [new Block(0, 0, "red"), new Block(0, 1, "red"), new Block(0, 2, "red"), new Block(0, 3, "red")],
+                    [new Block(1, 0, "red"), new Block(1, 1, "red"), new Block(1, 2, "green"), new Block(1, 3, "red")],
+                    [new Block(2, 0, "red"), new Block(2, 1, "green"), new Block(2, 2, "green"), new Block(2, 3, "red")],
+                    [new Block(3, 0, "red"), new Block(3, 1, "red"), new Block(3, 2, "green"), new Block(3, 3, "red")]
+                ]);
+
+                blockGrid.remove([
+                    new Block(2, 1, "green"),
+                    new Block(3, 2, "green"),
+                    new Block(1, 2, "green"),
+                    new Block(2, 2, "green")]);
+
+                expect(blockGrid.grid[1][2]).toEqual(new Block(1, 2, "red"));
+                expect(blockGrid.grid[2][1]).toEqual(new Block(2, 1, "red"));
+                expect(blockGrid.grid[2][2]).toEqual(new Block(2, 2, "grey"));
+                expect(blockGrid.grid[3][2]).toEqual(new Block(3, 2, "red"));
+
+                expect(blockGrid.grid).toEqual([
+                    [new Block(0, 0, "red"), new Block(0, 1, "red"), new Block(0, 2, "red"), new Block(0, 3, "red")],
+                    [new Block(1, 0, "red"), new Block(1, 1, "red"), new Block(1, 2, "red"), new Block(1, 3, "grey")],
+                    [new Block(2, 0, "red"), new Block(2, 1, "red"), new Block(2, 2, "grey"), new Block(2, 3, "grey")],
+                    [new Block(3, 0, "red"), new Block(3, 1, "red"), new Block(3, 2, "red"), new Block(3, 3, "grey")]
+                ])
+            }
+        );
+
     });
 
 });

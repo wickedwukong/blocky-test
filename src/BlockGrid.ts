@@ -69,7 +69,7 @@ class BlockGrid {
     }
 
     remove(affectedBlocks: Block[]) {
-        affectedBlocks.forEach((block) => {
+        affectedBlocks.sort(this.leftToRightTopToBottom()).forEach((block) => {
                 const aboveConnectedBlocks = this.aboveConnectedBlocks(block);
 
                 aboveConnectedBlocks.forEach((block) => {
@@ -81,6 +81,16 @@ class BlockGrid {
         );
     }
 
+    private leftToRightTopToBottom() {
+        return (b1, b2) => {
+            if (b1.x < b2.x) return -1;
+
+            if (b1.x > b2.x) return 1;
+
+            return (b1.y < b2.y) ? 1 : -1;
+        };
+    }
+    
     private leftAffectedBlock(specifiedBlock: Block): Block | null {
         if (specifiedBlock.x == 0) return null;
         const leftBlock = this.grid[specifiedBlock.x - 1][specifiedBlock.y];
