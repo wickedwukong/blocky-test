@@ -80,6 +80,19 @@ describe('BlockGrid', () => {
             expect(affectedBlocks).toContain(affectedBlock);
         });
 
+        it('find 2 affected blocks - 2 blocks on the same row - search right', () => {
+            let specifiedBlock = new Block(0, 0, 'green');
+            let affectedBlock = new Block(1, 0, 'green');
+            const blockGrid = new BlockGrid([[specifiedBlock], [affectedBlock]]);
+
+
+            const affectedBlocks = blockGrid.affectedBlocks(specifiedBlock);
+
+            expect(affectedBlocks).toHaveLength(2);
+            expect(affectedBlocks).toContain(specifiedBlock);
+            expect(affectedBlocks).toContain(affectedBlock);
+        });
+
         it('find 3 affected blocks - 3 blocks on the same row - search left', () => {
             let affectedBlock1 = new Block(0, 0, 'green');
             let affectedBlock2 = new Block(1, 0, 'green');

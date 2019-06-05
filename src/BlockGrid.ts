@@ -80,6 +80,12 @@ class BlockGrid {
         return (belowBlock.colour === specifiedBlock.colour) ? belowBlock : null;
     }
 
+    private rightAffectedBlock(specifiedBlock: Block): Block | null {
+        if (specifiedBlock.x == this.width() - 1) return null;
+        const belowBlock = this.grid[specifiedBlock.x + 1][specifiedBlock.y];
+        return (belowBlock.colour === specifiedBlock.colour) ? belowBlock : null;
+    }
+
     private helper(specifiedBlock: Block, affectedBlocks: Block[]): Block[] {
         function specifiedBlockHadBeenTraversed() {
             return affectedBlocks.indexOf(specifiedBlock) > -1;
@@ -99,6 +105,13 @@ class BlockGrid {
 
         if (belowAffectedBlock !== null) {
             this.helper(belowAffectedBlock, affectedBlocks);
+        }
+
+
+        const rightAffectedBlock: Block = this.rightAffectedBlock(specifiedBlock);
+
+        if (rightAffectedBlock !== null) {
+            this.helper(rightAffectedBlock, affectedBlocks);
         }
 
 
