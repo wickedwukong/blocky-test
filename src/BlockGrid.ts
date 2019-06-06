@@ -32,14 +32,6 @@ class BlockGrid {
         return new this(grid);
     }
 
-    private width(): number {
-        return this.grid.length;
-    }
-
-    private height(): number {
-        return this.grid[0].length;
-    }
-
     render(el = document.getElementById('gridEl')) {
         function removeExistingGrid() {
             while (el.firstChild) {
@@ -49,6 +41,24 @@ class BlockGrid {
 
         removeExistingGrid();
         this.drawGrid(el);
+    }
+
+    blockClicked(e: MouseEvent, block: Block) {
+        this.remove(this.affectedBlocks(block));
+        this.render();
+    }
+
+    remove(affectedBlocks: Block[]) {
+        affectedBlocks.sort(this.leftToRightTopToBottom).forEach((block) => {
+                const aboveConnectedBlocks = this.aboveConnectedBlocks(block);
+
+                aboveConnectedBlocks.forEach((block) => {
+                    const aboveConnectedBlock = this.aboveConnectedBlock(block);
+                    this.grid[block.x][block.y].colour = (aboveConnectedBlock === null) ? "grey" : aboveConnectedBlock.colour;
+                });
+
+            }
+        );
     }
 
     private drawGrid(el) {
@@ -75,22 +85,8 @@ class BlockGrid {
         }
     }
 
-    blockClicked(e: MouseEvent, block: Block) {
-        this.remove(this.affectedBlocks(block));
-        this.render();
-    }
-
-    remove(affectedBlocks: Block[]) {
-        affectedBlocks.sort(this.leftToRightTopToBottom).forEach((block) => {
-                const aboveConnectedBlocks = this.aboveConnectedBlocks(block);
-
-                aboveConnectedBlocks.forEach((block) => {
-                    const aboveConnectedBlock = this.aboveConnectedBlock(block);
-                    this.grid[block.x][block.y].colour = (aboveConnectedBlock === null) ? "grey" : aboveConnectedBlock.colour;
-                });
-
-            }
-        );
+    affectedBlocks(specifiedBlock: Block): Block[] {
+        return this.searchLeftDownRightUp(specifiedBlock, [])
     }
 
     private leftToRightTopToBottom = (b1: Block, b2: Block) => {
@@ -172,8 +168,12 @@ class BlockGrid {
         return affectedBlocks;
     }
 
-    affectedBlocks(specifiedBlock: Block): Block[] {
-        return this.searchLeftDownRightUp(specifiedBlock, [])
+    private width(): number {
+        return this.grid.length;
+    }
+
+    private height(): number {
+        return this.grid[0].length;
     }
 }
 
